@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "run_kind": "synthetic_fixture",
+  "run_id": "cloud-matched",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "mode": "cloud",
+  "protocol_id": "synthetic-protocol-v1",
+  "decision_model": "synthetic-cloud-a",
+  "decision_tokenizer": "synthetic-cloud-tokenizer",
+  "baseline_run_id": null,
+  "status": "completed",
+  "elapsed_ms": {
+    "value": 200,
+    "provenance": "expected"
+  },
+  "peak_vram_mib": {
+    "value": null,
+    "reason": "NOT_MEASURED"
+  },
+  "context_observation": "complete",
+  "security_observation": "complete",
+  "invocations": [
+    {
+      "id": "invoke-cloud",
+      "model": "synthetic-cloud-a",
+      "tokenizer": "synthetic-cloud-tokenizer",
+      "execution_target": "cloud",
+      "executed": true,
+      "status": "completed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 100,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 80,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": 95,
+        "provenance": "expected"
+      },
+      "reserved_output_tokens": {
+        "value": 16,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": false,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": 20,
+          "provenance": "expected"
+        },
+        "uncached_input": {
+          "value": 60,
+          "provenance": "expected"
+        },
+        "output": {
+          "value": 30,
+          "provenance": "expected"
+        }
+      },
+      "api_pricing": {
+        "snapshot_id": "synthetic-price-v1",
+        "currency": "USD",
+        "provenance": "expected",
+        "per_million": {
+          "cached_input": "1",
+          "uncached_input": "2",
+          "output": "4"
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "event-compaction",
+      "type": "compaction",
+      "invocation_id": "invoke-cloud"
+    }
+  ],
+  "output": {
+    "claims": [
+      {
+        "id": "failure-mechanism",
+        "value": "read-only-filesystem",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "mount-source",
+        "value": "indeterminate",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "mechanism",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "uncertainty",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "run_kind": "synthetic_fixture",
+  "run_id": "hybrid-partial",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "mode": "hybrid",
+  "protocol_id": "synthetic-protocol-v1",
+  "decision_model": "synthetic-cloud-a",
+  "decision_tokenizer": "synthetic-cloud-tokenizer",
+  "baseline_run_id": "cloud-matched",
+  "status": "partial",
+  "elapsed_ms": {
+    "value": 320,
+    "provenance": "expected"
+  },
+  "peak_vram_mib": {
+    "value": null,
+    "reason": "NOT_MEASURED"
+  },
+  "context_observation": "complete",
+  "security_observation": "complete",
+  "invocations": [
+    {
+      "id": "invoke-local",
+      "model": "synthetic-local-a",
+      "tokenizer": "synthetic-local-tokenizer",
+      "execution_target": "local",
+      "executed": true,
+      "status": "completed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 80,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 40,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": 48,
+        "provenance": "expected"
+      },
+      "reserved_output_tokens": {
+        "value": 20,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": false,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": 0,
+          "provenance": "expected"
+        },
+        "uncached_input": {
+          "value": 25,
+          "provenance": "expected"
+        },
+        "output": {
+          "value": 8,
+          "provenance": "expected"
+        }
+      },
+      "api_pricing": null
+    },
+    {
+      "id": "invoke-decision",
+      "model": "synthetic-cloud-a",
+      "tokenizer": "synthetic-cloud-tokenizer",
+      "execution_target": "cloud",
+      "executed": true,
+      "status": "completed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 100,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 92,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": 100,
+        "provenance": "expected"
+      },
+      "reserved_output_tokens": {
+        "value": 10,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": true,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": 5,
+          "provenance": "expected"
+        },
+        "uncached_input": {
+          "value": 95,
+          "provenance": "expected"
+        },
+        "output": {
+          "value": 15,
+          "provenance": "expected"
+        }
+      },
+      "api_pricing": {
+        "snapshot_id": "synthetic-price-v1",
+        "currency": "USD",
+        "provenance": "expected",
+        "per_million": {
+          "cached_input": "1",
+          "uncached_input": "2",
+          "output": "4"
+        }
+      }
+    },
+    {
+      "id": "invoke-denied",
+      "model": "synthetic-cloud-a",
+      "tokenizer": "synthetic-cloud-tokenizer",
+      "execution_target": "cloud",
+      "executed": true,
+      "status": "failed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 100,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 100,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": null,
+        "reason": "NOT_MEASURED"
+      },
+      "reserved_output_tokens": {
+        "value": 20,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": false,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        },
+        "uncached_input": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        },
+        "output": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        }
+      },
+      "api_pricing": null
+    }
+  ],
+  "events": [
+    {
+      "id": "event-runtime",
+      "type": "runtime_truncation",
+      "invocation_id": "invoke-decision"
+    },
+    {
+      "id": "event-output",
+      "type": "output_limit_truncation",
+      "invocation_id": "invoke-decision"
+    },
+    {
+      "id": "event-limit",
+      "type": "context_limit_error",
+      "invocation_id": "invoke-denied"
+    },
+    {
+      "id": "event-approval",
+      "type": "human_approval",
+      "code": "planned-review"
+    },
+    {
+      "id": "event-failure",
+      "type": "human_failure_intervention",
+      "code": "operator-assisted"
+    }
+  ],
+  "output": {
+    "claims": [
+      {
+        "id": "failure-mechanism",
+        "value": "read-only-filesystem",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "mount-source",
+        "value": "indeterminate",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "mechanism",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      }
+    ]
+  }
+}

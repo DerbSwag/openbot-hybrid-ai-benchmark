@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "run_kind": "synthetic_fixture",
+  "run_id": "cloud-partial",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "mode": "cloud",
+  "protocol_id": "synthetic-protocol-v1",
+  "decision_model": "synthetic-cloud-a",
+  "decision_tokenizer": "synthetic-cloud-tokenizer",
+  "baseline_run_id": null,
+  "status": "partial",
+  "elapsed_ms": {
+    "value": 300,
+    "provenance": "estimated"
+  },
+  "peak_vram_mib": {
+    "value": null,
+    "reason": "NOT_MEASURED"
+  },
+  "context_observation": "complete",
+  "security_observation": "complete",
+  "invocations": [
+    {
+      "id": "invoke-cloud",
+      "model": "synthetic-cloud-a",
+      "tokenizer": "synthetic-cloud-tokenizer",
+      "execution_target": "cloud",
+      "executed": true,
+      "status": "completed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 80,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 40,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": 48,
+        "provenance": "expected"
+      },
+      "reserved_output_tokens": {
+        "value": 20,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": false,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": 10,
+          "provenance": "estimated"
+        },
+        "uncached_input": {
+          "value": 30,
+          "provenance": "estimated"
+        },
+        "output": {
+          "value": 5,
+          "provenance": "estimated"
+        }
+      },
+      "api_pricing": {
+        "snapshot_id": "synthetic-estimate-v1",
+        "currency": "USD",
+        "provenance": "estimated",
+        "per_million": {
+          "cached_input": "1",
+          "uncached_input": "2",
+          "output": "4"
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "event-failure",
+      "type": "human_failure_intervention",
+      "code": "operator-assisted"
+    },
+    {
+      "id": "event-policy",
+      "type": "security_violation",
+      "code": "simulated-policy-breach"
+    }
+  ],
+  "output": {
+    "claims": [
+      {
+        "id": "failure-mechanism",
+        "value": "read-only-filesystem",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "mount-source",
+        "value": "known",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "mechanism",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      }
+    ]
+  }
+}

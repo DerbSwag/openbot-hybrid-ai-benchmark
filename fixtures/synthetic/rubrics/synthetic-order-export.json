@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "synthetic-order-export",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "assertions": [
+    {
+      "claim_id": "failure-mechanism",
+      "accepted_value": "read-only-filesystem",
+      "evidence_ids": [
+        "ev-canary"
+      ],
+      "weight": 2
+    },
+    {
+      "claim_id": "mount-source",
+      "accepted_value": "indeterminate",
+      "evidence_ids": [
+        "ev-gap"
+      ],
+      "weight": 1
+    }
+  ],
+  "required_deliverables": [
+    {
+      "id": "mechanism",
+      "evidence_ids": [
+        "ev-canary"
+      ]
+    },
+    {
+      "id": "uncertainty",
+      "evidence_ids": [
+        "ev-gap"
+      ]
+    }
+  ]
+}

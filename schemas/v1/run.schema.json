@@ -1,0 +1,451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmark.invalid/schemas/v1/run.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "classification": {
+      "const": "synthetic"
+    },
+    "run_kind": {
+      "enum": [
+        "synthetic_fixture",
+        "benchmark_observation"
+      ]
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000
+    },
+    "rubric_revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000
+    },
+    "mode": {
+      "enum": [
+        "local",
+        "cloud",
+        "hybrid"
+      ]
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "decision_model": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "decision_tokenizer": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "baseline_run_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,63}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "partial",
+        "failed",
+        "unknown"
+      ]
+    },
+    "elapsed_ms": {
+      "$ref": "case.schema.json#/$defs/valueInt"
+    },
+    "peak_vram_mib": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "provenance": {
+              "enum": [
+                "measured",
+                "estimated",
+                "expected"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "null"
+            },
+            "reason": {
+              "enum": [
+                "NOT_MEASURED"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "context_observation": {
+      "enum": [
+        "complete",
+        "unknown"
+      ]
+    },
+    "security_observation": {
+      "enum": [
+        "complete",
+        "unknown"
+      ]
+    },
+    "invocations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "model": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "tokenizer": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "executed": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "completed",
+              "failed",
+              "rejected",
+              "unknown"
+            ]
+          },
+          "native_context": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "runtime_context": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "prompt_tokens": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "final_context_tokens": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "reserved_output_tokens": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "safety_margin": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "runtime_truncated": {
+            "$ref": "case.schema.json#/$defs/valueBool"
+          },
+          "tokens": {
+            "type": "object",
+            "properties": {
+              "cached_input": {
+                "$ref": "case.schema.json#/$defs/valueInt"
+              },
+              "uncached_input": {
+                "$ref": "case.schema.json#/$defs/valueInt"
+              },
+              "output": {
+                "$ref": "case.schema.json#/$defs/valueInt"
+              }
+            },
+            "required": [
+              "cached_input",
+              "uncached_input",
+              "output"
+            ],
+            "additionalProperties": false
+          },
+          "api_pricing": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "snapshot_id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  "currency": {
+                    "const": "USD"
+                  },
+                  "provenance": {
+                    "enum": [
+                      "estimated",
+                      "expected"
+                    ]
+                  },
+                  "per_million": {
+                    "type": "object",
+                    "properties": {
+                      "cached_input": {
+                        "$ref": "case.schema.json#/$defs/rate"
+                      },
+                      "uncached_input": {
+                        "$ref": "case.schema.json#/$defs/rate"
+                      },
+                      "output": {
+                        "$ref": "case.schema.json#/$defs/rate"
+                      }
+                    },
+                    "required": [
+                      "cached_input",
+                      "uncached_input",
+                      "output"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "snapshot_id",
+                  "currency",
+                  "provenance",
+                  "per_million"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "execution_target": {
+            "enum": [
+              "local",
+              "cloud"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "model",
+          "tokenizer",
+          "executed",
+          "status",
+          "native_context",
+          "runtime_context",
+          "prompt_tokens",
+          "final_context_tokens",
+          "reserved_output_tokens",
+          "safety_margin",
+          "runtime_truncated",
+          "tokens",
+          "api_pricing",
+          "execution_target"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 200
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,63}$"
+              },
+              "type": {
+                "enum": [
+                  "preflight_context_rejection",
+                  "runtime_truncation",
+                  "context_limit_error",
+                  "compaction",
+                  "output_limit_truncation"
+                ]
+              },
+              "invocation_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,63}$"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "invocation_id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,63}$"
+              },
+              "type": {
+                "enum": [
+                  "human_approval",
+                  "human_failure_intervention",
+                  "security_violation"
+                ]
+              },
+              "code": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,63}$"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "code"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 200
+    },
+    "output": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "claims": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  "evidence_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                    },
+                    "minItems": 1,
+                    "maxItems": 200,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "value",
+                  "evidence_ids"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 200
+            },
+            "deliverables": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  "evidence_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                    },
+                    "minItems": 1,
+                    "maxItems": 200,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "evidence_ids"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 200
+            }
+          },
+          "required": [
+            "claims",
+            "deliverables"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "classification",
+    "run_kind",
+    "run_id",
+    "case_id",
+    "case_revision",
+    "rubric_revision",
+    "mode",
+    "protocol_id",
+    "decision_model",
+    "decision_tokenizer",
+    "baseline_run_id",
+    "status",
+    "elapsed_ms",
+    "peak_vram_mib",
+    "context_observation",
+    "security_observation",
+    "invocations",
+    "events",
+    "output"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

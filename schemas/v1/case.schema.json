@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmark.invalid/schemas/v1/case.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "classification": {
+      "const": "synthetic"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000
+    },
+    "category": {
+      "const": "incident-diagnosis"
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "fact": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          }
+        },
+        "required": [
+          "id",
+          "fact"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 60
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "data_scope": {
+          "const": "synthetic-only"
+        },
+        "external_access": {
+          "const": false
+        }
+      },
+      "required": [
+        "data_scope",
+        "external_access"
+      ],
+      "additionalProperties": false
+    },
+    "requested_deliverables": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]{0,63}$"
+      },
+      "minItems": 1,
+      "maxItems": 200,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "classification",
+    "case_id",
+    "revision",
+    "category",
+    "prompt",
+    "evidence",
+    "constraints",
+    "requested_deliverables"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]{0,63}$"
+      },
+      "minItems": 1,
+      "maxItems": 200,
+      "uniqueItems": true
+    },
+    "valueInt": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "provenance": {
+              "enum": [
+                "measured",
+                "estimated",
+                "expected"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "null"
+            },
+            "reason": {
+              "enum": [
+                "NOT_MEASURED",
+                "NOT_APPLICABLE",
+                "NOT_REPORTED"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "valueBool": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "boolean"
+            },
+            "provenance": {
+              "enum": [
+                "measured",
+                "estimated",
+                "expected"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "null"
+            },
+            "reason": {
+              "enum": [
+                "NOT_MEASURED",
+                "NOT_APPLICABLE",
+                "NOT_REPORTED"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "rate": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,6})?$"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    }
+  }
+}

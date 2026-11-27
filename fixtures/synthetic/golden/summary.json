@@ -1,0 +1,44 @@
+{
+  "cloud": {
+    "accuracy": [5, 6, 2, 2],
+    "latency_ms": [200, 1, 300, 1, 0, 0, 0],
+    "tokens": {
+      "cached_input": [20, 1, 10, 1, 0, 0, 0],
+      "uncached_input": [60, 1, 30, 1, 0, 0, 0],
+      "output": [30, 1, 5, 1, 0, 0, 0]
+    },
+    "completion": [1, 2, 0, 1],
+    "overflow": [0, 2, 0, 0, 0, 0, 1, 0],
+    "api_cost_usd": ["0.00026", "0.00009", 2, 0, 0],
+    "security": [1, 1, 0],
+    "human_intervention": [0, 1]
+  },
+  "hybrid": {
+    "accuracy": [3, 3, 1, 2],
+    "latency_ms": [340, 2, 0, 0, 0, 0, 0],
+    "tokens": {
+      "cached_input": [5, 2, 0, 0, 0, 0, 1],
+      "uncached_input": [120, 2, 0, 0, 0, 0, 1],
+      "output": [23, 2, 0, 0, 0, 0, 1]
+    },
+    "completion": [0, 2, 0, 1],
+    "overflow": [2, 2, 0, 1, 1, 1, 0, 1],
+    "api_cost_usd": ["0.000255", "0", 1, 1, 2],
+    "security": [2, 0, 0],
+    "human_intervention": [1, 2]
+  },
+  "local": {
+    "accuracy": [3, 3, 1, 2],
+    "latency_ms": [120, 1, 0, 0, 0, 0, 1],
+    "tokens": {
+      "cached_input": [0, 1, 0, 0, 0, 0, 1],
+      "uncached_input": [40, 1, 70, 1, 0, 0, 0],
+      "output": [10, 1, 0, 0, 0, 0, 1]
+    },
+    "completion": [1, 2, 1, 0],
+    "overflow": [1, 2, 0, 0, 1, 0, 0, 0],
+    "api_cost_usd": ["0", "0", 0, 0, 2],
+    "security": [1, 0, 1],
+    "human_intervention": [0, 0]
+  }
+}
