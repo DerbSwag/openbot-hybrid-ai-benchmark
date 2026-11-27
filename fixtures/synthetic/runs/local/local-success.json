@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "run_kind": "synthetic_fixture",
+  "run_id": "local-success",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "mode": "local",
+  "protocol_id": "synthetic-protocol-v1",
+  "decision_model": "synthetic-local-a",
+  "decision_tokenizer": "synthetic-local-tokenizer",
+  "baseline_run_id": null,
+  "status": "completed",
+  "elapsed_ms": {
+    "value": 120,
+    "provenance": "expected"
+  },
+  "peak_vram_mib": {
+    "value": null,
+    "reason": "NOT_MEASURED"
+  },
+  "context_observation": "complete",
+  "security_observation": "complete",
+  "invocations": [
+    {
+      "id": "invoke-local",
+      "model": "synthetic-local-a",
+      "tokenizer": "synthetic-local-tokenizer",
+      "execution_target": "local",
+      "executed": true,
+      "status": "completed",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 80,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 40,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": 48,
+        "provenance": "expected"
+      },
+      "reserved_output_tokens": {
+        "value": 20,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": false,
+        "provenance": "expected"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": 0,
+          "provenance": "expected"
+        },
+        "uncached_input": {
+          "value": 40,
+          "provenance": "expected"
+        },
+        "output": {
+          "value": 10,
+          "provenance": "expected"
+        }
+      },
+      "api_pricing": null
+    }
+  ],
+  "events": [],
+  "output": {
+    "claims": [
+      {
+        "id": "failure-mechanism",
+        "value": "read-only-filesystem",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "mount-source",
+        "value": "indeterminate",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "mechanism",
+        "evidence_ids": [
+          "ev-canary"
+        ]
+      },
+      {
+        "id": "uncertainty",
+        "evidence_ids": [
+          "ev-gap"
+        ]
+      }
+    ]
+  }
+}

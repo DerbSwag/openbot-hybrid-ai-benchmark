@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "run_kind": "synthetic_fixture",
+  "run_id": "hybrid-rejected",
+  "case_revision": 1,
+  "rubric_revision": 1,
+  "mode": "hybrid",
+  "protocol_id": "synthetic-protocol-v1",
+  "decision_model": "synthetic-cloud-a",
+  "decision_tokenizer": "synthetic-cloud-tokenizer",
+  "baseline_run_id": null,
+  "status": "failed",
+  "elapsed_ms": {
+    "value": 20,
+    "provenance": "expected"
+  },
+  "peak_vram_mib": {
+    "value": null,
+    "reason": "NOT_MEASURED"
+  },
+  "context_observation": "complete",
+  "security_observation": "complete",
+  "invocations": [
+    {
+      "id": "invoke-denied",
+      "model": "synthetic-cloud-a",
+      "tokenizer": "synthetic-cloud-tokenizer",
+      "execution_target": "cloud",
+      "executed": false,
+      "status": "rejected",
+      "native_context": {
+        "value": 128,
+        "provenance": "expected"
+      },
+      "runtime_context": {
+        "value": 80,
+        "provenance": "expected"
+      },
+      "prompt_tokens": {
+        "value": 60,
+        "provenance": "expected"
+      },
+      "final_context_tokens": {
+        "value": null,
+        "reason": "NOT_MEASURED"
+      },
+      "reserved_output_tokens": {
+        "value": 20,
+        "provenance": "expected"
+      },
+      "safety_margin": {
+        "value": 4,
+        "provenance": "expected"
+      },
+      "runtime_truncated": {
+        "value": null,
+        "reason": "NOT_MEASURED"
+      },
+      "tokens": {
+        "cached_input": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        },
+        "uncached_input": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        },
+        "output": {
+          "value": null,
+          "reason": "NOT_MEASURED"
+        }
+      },
+      "api_pricing": null
+    }
+  ],
+  "events": [
+    {
+      "id": "event-preflight",
+      "type": "preflight_context_rejection",
+      "invocation_id": "invoke-denied"
+    },
+    {
+      "id": "event-failure",
+      "type": "human_failure_intervention",
+      "code": "operator-assisted"
+    }
+  ],
+  "output": null
+}

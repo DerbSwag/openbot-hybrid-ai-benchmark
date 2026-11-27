@@ -1,0 +1,71 @@
+
+name: Offline validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      BENCHMARK_IMAGE: python@sha256:db5942d111df72110e7a67da3fc5159e83ac85cd24808b91bdc4769e166ed1b7
+    steps:
+      - name: Checkout approved source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Bootstrap pinned image and wheels
+        shell: bash
+        run: |
+          set -euo pipefail
+          bootstrap="$RUNNER_TEMP/benchmark-bootstrap"
+          mkdir -p "$bootstrap/wheelhouse"
+          lock_pattern='^[a-z0-9-]+==[0-9]+(\.[0-9]+)+ --hash=sha256:[0-9a-f]{64}$'
+          for lock in bootstrap.lock requirements.lock; do
+            test -s "$lock"
+            if grep -qvE "$lock_pattern" "$lock"; then
+              echo "BLOCKED: lock entries must be pinned package versions and SHA-256 hashes" >&2
+              exit 1
+            fi
+          done
+          docker pull --platform linux/amd64 "$BENCHMARK_IMAGE"
+          docker run --rm --pull never --platform linux/amd64 \
+            --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges \
+            --user "$(id -u):$(id -g)" \
+            --mount "type=bind,src=$PWD/bootstrap.lock,dst=/bootstrap.lock,readonly" \
+            --mount "type=bind,src=$PWD/requirements.lock,dst=/requirements.lock,readonly" \
+            --mount "type=bind,src=$bootstrap/wheelhouse,dst=/wheelhouse" "$BENCHMARK_IMAGE" \
+            env PIP_CONFIG_FILE=/dev/null python -I -B -m pip --isolated --disable-pip-version-check --no-cache-dir \
+            download --retries 0 --index-url https://pypi.org/simple --only-binary=:all: \
+            --require-hashes --no-deps --dest /wheelhouse -r /bootstrap.lock -r /requirements.lock
+
+      - name: Enforce offline validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          bootstrap="$RUNNER_TEMP/benchmark-bootstrap"
+          work=$(mktemp -d "$RUNNER_TEMP/benchmark-validate.XXXXXX")
+          mkdir "$work/agent"
+          opts=(--rm --pull never --platform linux/amd64 --network none --read-only --tmpfs /tmp
+            --cap-drop ALL --security-opt no-new-privileges --user "$(id -u):$(id -g)")
+          project=()
+          for path in benchmark fixtures tests schemas scripts docs .github .gitattributes .gitignore README.md LICENSE bootstrap.lock requirements.lock; do
+            project+=(--mount "type=bind,src=$PWD/$path,dst=/repo/$path,readonly")
+          done
+          docker run "${opts[@]}" "${project[@]}" \
+            --mount "type=bind,src=$bootstrap/wheelhouse,dst=/wheelhouse,readonly" \
+            --mount "type=bind,src=$work,dst=/scratch" "$BENCHMARK_IMAGE" \
+            sh /repo/scripts/validate-offline.sh /repo /wheelhouse /scratch /usr/local/bin/python
+          mv "$work/agent-input.json" "$work/agent/agent-input.json"
+          docker run "${opts[@]}" \
+            --mount "type=bind,src=$work/agent,dst=/agent-input,readonly" \
+            --mount "type=bind,src=$PWD/scripts/isolation_probe.py,dst=/isolation_probe.py,readonly" \
+            "$BENCHMARK_IMAGE" python -I -B /isolation_probe.py --agent-input /agent-input/agent-input.json
+          sha256sum "$work/report.json"

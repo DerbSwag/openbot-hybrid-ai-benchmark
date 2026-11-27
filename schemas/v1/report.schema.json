@@ -1,0 +1,1120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmark.invalid/schemas/v1/report.schema.json",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "evaluator_version": {
+      "const": "1.0"
+    },
+    "classification": {
+      "const": "synthetic"
+    },
+    "input_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "case_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "case_revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          },
+          "rubric_revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          },
+          "protocol_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "mode": {
+            "enum": [
+              "local",
+              "cloud",
+              "hybrid"
+            ]
+          },
+          "run_kind": {
+            "enum": [
+              "synthetic_fixture",
+              "benchmark_observation"
+            ]
+          },
+          "status": {
+            "enum": [
+              "completed",
+              "partial",
+              "failed",
+              "unknown"
+            ]
+          },
+          "accuracy": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "output_completeness": {
+            "enum": [
+              "complete",
+              "incomplete",
+              "unknown"
+            ]
+          },
+          "completed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "elapsed_ms": {
+            "$ref": "case.schema.json#/$defs/valueInt"
+          },
+          "tokens": {
+            "type": "object",
+            "properties": {
+              "cached_input": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              },
+              "uncached_input": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "cached_input",
+              "uncached_input",
+              "output"
+            ],
+            "additionalProperties": false
+          },
+          "context_overflow": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "context_events": {
+            "type": "object",
+            "properties": {
+              "preflight_context_rejection": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "runtime_truncation": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "context_limit_error": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "compaction": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "output_limit_truncation": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "preflight_context_rejection",
+              "runtime_truncation",
+              "context_limit_error",
+              "compaction",
+              "output_limit_truncation"
+            ],
+            "additionalProperties": false
+          },
+          "context_budget": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "invocation_id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                },
+                "status": {
+                  "enum": [
+                    "within",
+                    "exact",
+                    "over",
+                    "unknown"
+                  ]
+                },
+                "tokens_required": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "invocation_id",
+                "status",
+                "tokens_required"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "maxItems": 200
+          },
+          "api_cost": {
+            "type": "object",
+            "properties": {
+              "currency": {
+                "const": "USD"
+              },
+              "estimated": {
+                "$ref": "case.schema.json#/$defs/amount"
+              },
+              "expected": {
+                "$ref": "case.schema.json#/$defs/amount"
+              },
+              "covered_invocations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "missing_invocations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "rate_snapshots": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                },
+                "minItems": 0,
+                "maxItems": 200,
+                "uniqueItems": true
+              },
+              "not_applicable_invocations": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "currency",
+              "estimated",
+              "expected",
+              "covered_invocations",
+              "missing_invocations",
+              "rate_snapshots",
+              "not_applicable_invocations"
+            ],
+            "additionalProperties": false
+          },
+          "security": {
+            "enum": [
+              "pass",
+              "fail",
+              "unknown"
+            ]
+          },
+          "human_interventions": {
+            "type": "object",
+            "properties": {
+              "approval": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failure": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "approval",
+              "failure"
+            ],
+            "additionalProperties": false
+          },
+          "peak_vram_mib": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000000
+                  },
+                  "provenance": {
+                    "enum": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  },
+                  "reason": {
+                    "enum": [
+                      "NOT_MEASURED"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "cloud_baseline": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": [
+                  "matched",
+                  "not_requested"
+                ]
+              },
+              "run_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "run_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "run_id",
+          "case_id",
+          "case_revision",
+          "rubric_revision",
+          "protocol_id",
+          "mode",
+          "run_kind",
+          "status",
+          "accuracy",
+          "output_completeness",
+          "completed",
+          "elapsed_ms",
+          "tokens",
+          "context_overflow",
+          "context_events",
+          "context_budget",
+          "api_cost",
+          "security",
+          "human_interventions",
+          "peak_vram_mib",
+          "cloud_baseline"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 500
+    },
+    "summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "enum": [
+              "local",
+              "cloud",
+              "hybrid"
+            ]
+          },
+          "run_kind": {
+            "enum": [
+              "synthetic_fixture",
+              "benchmark_observation"
+            ]
+          },
+          "runs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "accuracy": {
+            "type": "object",
+            "properties": {
+              "score": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "coverage": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "score",
+              "coverage"
+            ],
+            "additionalProperties": false
+          },
+          "end_to_end_latency": {
+            "type": "object",
+            "properties": {
+              "by_provenance": {
+                "type": "object",
+                "properties": {
+                  "measured": {
+                    "type": "object",
+                    "properties": {
+                      "total_ms": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "observations": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "total_ms",
+                      "observations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "estimated": {
+                    "type": "object",
+                    "properties": {
+                      "total_ms": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "observations": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "total_ms",
+                      "observations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "expected": {
+                    "type": "object",
+                    "properties": {
+                      "total_ms": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "observations": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "total_ms",
+                      "observations"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "measured",
+                  "estimated",
+                  "expected"
+                ],
+                "additionalProperties": false
+              },
+              "unknown": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "by_provenance",
+              "unknown"
+            ],
+            "additionalProperties": false
+          },
+          "token_consumption": {
+            "type": "object",
+            "properties": {
+              "cached_input": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              },
+              "uncached_input": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              },
+              "output": {
+                "type": "object",
+                "properties": {
+                  "totals": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "missing_invocations": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "observations": {
+                    "type": "object",
+                    "properties": {
+                      "measured": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "estimated": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "expected": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "measured",
+                      "estimated",
+                      "expected"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "totals",
+                  "missing_invocations",
+                  "observations"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "cached_input",
+              "uncached_input",
+              "output"
+            ],
+            "additionalProperties": false
+          },
+          "completion": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "unknown": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "partial": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "rate",
+              "unknown",
+              "partial"
+            ],
+            "additionalProperties": false
+          },
+          "context_overflow": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "denominator": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "unknown": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "events": {
+                "type": "object",
+                "properties": {
+                  "preflight_context_rejection": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "runtime_truncation": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "context_limit_error": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "compaction": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "output_limit_truncation": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "preflight_context_rejection",
+                  "runtime_truncation",
+                  "context_limit_error",
+                  "compaction",
+                  "output_limit_truncation"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "rate",
+              "unknown",
+              "events"
+            ],
+            "additionalProperties": false
+          },
+          "api_cost": {
+            "type": "object",
+            "properties": {
+              "currency": {
+                "const": "USD"
+              },
+              "estimated": {
+                "$ref": "case.schema.json#/$defs/amount"
+              },
+              "expected": {
+                "$ref": "case.schema.json#/$defs/amount"
+              },
+              "covered_invocations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "missing_invocations": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "rate_snapshots": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9-]{0,63}$"
+                },
+                "minItems": 0,
+                "maxItems": 200,
+                "uniqueItems": true
+              },
+              "not_applicable_invocations": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "currency",
+              "estimated",
+              "expected",
+              "covered_invocations",
+              "missing_invocations",
+              "rate_snapshots",
+              "not_applicable_invocations"
+            ],
+            "additionalProperties": false
+          },
+          "security": {
+            "type": "object",
+            "properties": {
+              "pass": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "fail": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unknown": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "pass",
+              "fail",
+              "unknown"
+            ],
+            "additionalProperties": false
+          },
+          "human_interventions": {
+            "type": "object",
+            "properties": {
+              "approval": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failure": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "approval",
+              "failure"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "mode",
+          "run_kind",
+          "runs",
+          "accuracy",
+          "end_to_end_latency",
+          "token_consumption",
+          "completion",
+          "context_overflow",
+          "api_cost",
+          "security",
+          "human_interventions"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 6
+    }
+  },
+  "required": [
+    "schema_version",
+    "evaluator_version",
+    "classification",
+    "input_digest",
+    "runs",
+    "summaries"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

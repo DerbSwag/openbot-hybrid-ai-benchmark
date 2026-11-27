@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "case_id": "synthetic-order-export",
+  "revision": 1,
+  "category": "incident-diagnosis",
+  "prompt": "Analyze the staging order export incident. Identify the failure mechanism and state what the evidence leaves unresolved.",
+  "evidence": [
+    {
+      "id": "ev-before",
+      "fact": "Before the configuration change, both staging replicas completed 12 of 12 synthetic exports."
+    },
+    {
+      "id": "ev-control",
+      "fact": "After the change, the unchanged control replica completed 12 of 12 synthetic exports."
+    },
+    {
+      "id": "ev-canary",
+      "fact": "After changing only the export target on the canary, all 12 synthetic exports failed with EROFS when opening the target file."
+    },
+    {
+      "id": "ev-gap",
+      "fact": "The supplied evidence contains no filesystem mount configuration or production observations."
+    }
+  ],
+  "constraints": {
+    "data_scope": "synthetic-only",
+    "external_access": false
+  },
+  "requested_deliverables": [
+    "mechanism",
+    "uncertainty"
+  ]
+}
