@@ -25,4 +25,4 @@ The evaluator CLI exposes `evaluate` (report JSON to stdout) and `agent-input sy
 - [Licensing](docs/licenses.md) lists pins, notices and redistribution obligations.
 - [Roadmap](docs/roadmap.md) preserves Phase 1C as a separate, approval-gated proposal.
 
-GitHub Actions has separate bootstrap and network-isolated validation steps. The checked-in workflow is a proposed CI configuration until a GitHub run has been verified. The project license is [MIT](LICENSE).
+GitHub Actions has separate bootstrap and network-isolated validation steps. The Docker offline validation workflow passed on the head of [PR #1](https://github.com/DerbSwag/openbot-hybrid-ai-benchmark/pull/1), on its pull-request run, and on the merge commit on `main`. See the [validation record](docs/phase1b1-validation.md) for run IDs and scope. The project license is [MIT](LICENSE).
