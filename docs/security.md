@@ -7,7 +7,7 @@ Echo-Pi's proposal from channel message 83 was rejected. It describes a profile 
 
 ## Offline boundary
 
-Bootstrap retrieves only the pinned public runtime and wheel artifacts. During validation the launcher uses a fresh Linux network namespace, read-only project inputs and wheelhouse, an ephemeral temporary directory and a separate scratch directory. GitHub Actions configures `--network none`, `--pull never`, no extra capabilities, no socket or credential mounts, and no artifact upload. Local WSL uses Bubblewrap with fresh namespaces and a cleared environment. A probe checks loopback-only interfaces, no external IPv4 or IPv6 routes and unreachable documentation-range endpoints. A connected namespace or unverified denial blocks validation. CI rejects lock entries outside the pinned package-and-hash form. The offline installer uses only wheelhouse and verifies hashes, including the bootstrap pip wheel before importing it.
+Bootstrap retrieves only the pinned public runtime and wheel artifacts. During validation the launcher uses a fresh Linux network namespace, read-only project inputs and wheelhouse, an ephemeral temporary directory and a separate scratch directory. GitHub Actions configures `--network none`, `--pull never`, a read-only root filesystem, the runner UID/GID, `--cap-drop ALL`, `no-new-privileges`, no socket or credential mounts, and no artifact upload. The evaluator and agent-view containers each have a separate ephemeral `/tmp` with the same mount options, `rw,nosuid,nodev,exec`. This permits the evaluator to load native Python dependencies from its temporary installation directory. Local WSL uses Bubblewrap with fresh namespaces and a cleared environment. A probe checks loopback-only interfaces, no external IPv4 or IPv6 routes and unreachable documentation-range endpoints. A connected namespace or unverified denial blocks validation. CI rejects lock entries outside the pinned package-and-hash form. The offline installer uses only wheelhouse and verifies hashes, including the bootstrap pip wheel before importing it.
 
 ## Data and gold boundary
 
@@ -27,4 +27,17 @@ The sanitized aggregate usage snapshot is recorded in usage-evidence-2026-11-27.
 
 ## Verification Evidence ? Phase 1B.1
 
-Local test commands and results are recorded in phase1b1-validation.md. GitHub Actions and Docker runtime verification remain BLOCKED. Atlas independently reviews the changed files and local evidence after this implementation handoff.
+The original WSL results and the three successful Docker CI runs are listed in the [validation record](phase1b1-validation.md). The Docker checks cover the offline evaluator and the projected synthetic agent view.
+
+## Post-merge verification — Phase 1B.2
+
+Atlas reviewed the exact PR head `3a5f4400149af977a9a0c091cf012e751fe4528f` after merge, focusing on the `/tmp` change, bootstrap integrity, offline and gold isolation, and publication boundaries. Atlas reported zero Critical or High findings within that scope, two Medium findings and two Low findings. Codex also completed its code review of the same head after merge. The pre-merge review gate was missed.
+
+| Tracking ID | Severity | Residual finding and planned work |
+| --- | --- | --- |
+| SEC-001 | Medium | A shared writable, executable temporary mount gives the agent view an execution capability its current probe does not require. Separate evaluator and agent-view options and verify `noexec` compatibility. |
+| SEC-002 | Medium | A late commit can miss review before merge. Require review evidence tied to the current PR head and re-check it when the head changes. |
+| SEC-003 | Low | Pattern checks can miss names, obfuscated data and paths outside the CI mount list. Add synthetic regression cases and verify publication inventory coverage. |
+| SEC-004 | Low | The harness checks wheel notices and does not inventory Debian OS package licenses. Document the OS package inventory before redistributing the runtime image. |
+
+These items remain open. The review did not include container escape testing or a live Phase 1C runtime. Phase 1C requires separate verification of private held-out gold separation and tool and network controls.

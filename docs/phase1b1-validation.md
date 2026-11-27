@@ -21,11 +21,25 @@ During development the scanner stopped on its own path-regex text; the user-home
 
 The harness emits publication-inventory.txt with a relative filename and SHA-256 for each scanned file. Local validation also blocks unexpected top-level entries before constructing its mount list. The Git inventory was compared against this manifest before handoff, including every modified and untracked publishable file. The manifest's final document hash is recorded locally after the document update to avoid a self-referential digest. Bootstrap downloads are unnecessary for this change.
 
+## Post-merge CI and review evidence
+
+[PR #1](https://github.com/DerbSwag/openbot-hybrid-ai-benchmark/pull/1) merged on 2026-11-27 at 14:51:21 UTC. The PR head and merge commit have identical Git trees. GitHub run metadata confirms successful bootstrap and offline validation for the following runs, with no uploaded artifacts.
+
+| Run | Event | Reported head SHA |
+| --- | --- | --- |
+| [46019168071](https://github.com/DerbSwag/openbot-hybrid-ai-benchmark/actions/runs/46019168071) | Feature branch push | `3a5f4400149af977a9a0c091cf012e751fe4528f` |
+| [46019176704](https://github.com/DerbSwag/openbot-hybrid-ai-benchmark/actions/runs/46019176704) | Pull request update | `3a5f4400149af977a9a0c091cf012e751fe4528f` |
+| [46019662265](https://github.com/DerbSwag/openbot-hybrid-ai-benchmark/actions/runs/46019662265) | Merge commit push to `main` | `7243379d516b4198d5767e049b8aae5bfcd91dd2` |
+
+The Phase 1B.1 release review recorded 28/28 passing tests and the report SHA-256 `3b97f39b9572d68a92a1eaec74826fb3811c71d679ab1bfc78b925dfd4e0d13a` for all three CI runs. Phase 1B.2 reconfirmed job and step status from GitHub metadata and recalculated the digest from two retained WSL reports. Raw CI logs were outside that unauthenticated check. The WSL result above and the inventory below describe the original hardening handoff.
+
+Codex Code Review reported no major issues on the PR head at 14:52:10 UTC in a PR bot comment. Atlas completed its independent security review of the same head in the project channel after merge. Neither was complete when PR #1 merged. A separate GitHub security review result was not verified. See [security verification and residual risks](security.md#post-merge-verification--phase-1b2).
+
 ## Remaining gates
 
-Docker and GitHub Actions runtime verification remain BLOCKED. Pattern scanning cannot prove absence of all sensitive content. The aggregate dashboard observation does not provide actual billing or isolated benchmark telemetry. Independent Atlas review is pending.
+Pattern scanning cannot prove absence of all sensitive content. The aggregate dashboard observation does not provide actual billing or isolated benchmark telemetry. The Phase 1C runner, private held-out gold separation and tool/network controls need separate verification before live execution. Phase 1C requires explicit approval.
 
-## Complete publication inventory
+## Publication inventory at the Phase 1B.1 handoff
 
 Paths are relative to the repository. This inventory includes the unchanged MIT license. M is modified from HEAD; ?? is untracked; tracked is unchanged. The offline manifest supplies exact SHA-256 values for every row, including this document.
 
