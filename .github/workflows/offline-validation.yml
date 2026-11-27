@@ -53,7 +53,7 @@ jobs:
           bootstrap="$RUNNER_TEMP/benchmark-bootstrap"
           work=$(mktemp -d "$RUNNER_TEMP/benchmark-validate.XXXXXX")
           mkdir "$work/agent"
-          opts=(--rm --pull never --platform linux/amd64 --network none --read-only --tmpfs /tmp
+          opts=(--rm --pull never --platform linux/amd64 --network none --read-only --tmpfs /tmp:rw,nosuid,nodev,exec
             --cap-drop ALL --security-opt no-new-privileges --user "$(id -u):$(id -g)")
           project=()
           for path in benchmark fixtures tests schemas scripts docs .github .gitattributes .gitignore README.md LICENSE bootstrap.lock requirements.lock; do
